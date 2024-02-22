@@ -33,7 +33,7 @@ export default function ResetPassword() {
                 setCPassword("")
             }
         } catch (e) {
-            console.error(e)
+            console.error("Error is: ", e)
             toast.error("Unexpected error occured")
         }
     }
