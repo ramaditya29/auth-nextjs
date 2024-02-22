@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import toast from "react-hot-toast"
 export default function ResetPassword() {
     const params = useSearchParams()
     const [token, setToken] = useState("")
@@ -16,19 +17,23 @@ export default function ResetPassword() {
     }, [])
 
     const resetPassword = async () => {
-        let response = await fetch("/api/user/resetPassword", {
-            method: "POST",
-            body: JSON.stringify({ token: token, password }),
-        })
-        let data = await response.json()
-        if (!response.ok) {
-            setSuccess("")
-            setError(data?.error)
-        } else {
-            setSuccess(data.message)
-            setError("")
-            setPassword("")
-            setCPassword("")
+        try {
+            let response = await fetch("/api/user/resetPassword", {
+                method: "POST",
+                body: JSON.stringify({ token: token, password }),
+            })
+            let data = await response.json()
+            if (!response.ok) {
+                setSuccess("")
+                setError(data?.error)
+            } else {
+                setSuccess(data.message)
+                setError("")
+                setPassword("")
+                setCPassword("")
+            }
+        } catch (e) {
+            toast.error("Unexpected error occured")
         }
     }
 
